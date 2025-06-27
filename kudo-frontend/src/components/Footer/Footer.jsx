@@ -27,6 +27,7 @@ export default function Footer() {
           py: { xs: 8, sm: 10 },
           textAlign: { sm: "center", md: "left" },
         }}
+        maxWidth="xl"
       >
         <Box
           sx={{
