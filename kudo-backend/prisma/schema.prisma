@@ -17,6 +17,7 @@ model Board{
     image_url String
     category String
     cards Cards[]
+    created_at DateTime @default(now()) 
 }
 
 model Cards{
