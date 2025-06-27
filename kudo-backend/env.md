@@ -1,0 +1,2 @@
+ENV Template
+DATABASE_URL=""
