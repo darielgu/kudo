@@ -23,10 +23,10 @@ model Board{
 
 model Cards{
     id Int @id @default(autoincrement())
-    title String
-    description String
-    image_url String
     board_id Int
-    likes Int
+    message String
+    image_url String
+    likes Int @default(0)
+    author String?
     board Board @relation(fields: [board_id], references: [id], onDelete: Cascade)
 }
