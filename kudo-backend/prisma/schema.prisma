@@ -25,7 +25,7 @@ model Cards{
     title String
     description String
     image_url String
-    board_id Int @default(autoincrement())
+    board_id Int
     likes Int
     board Board @relation(fields: [board_id], references: [id], onDelete: Cascade)
 }
