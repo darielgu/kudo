@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, TextField } from "@mui/material";
 import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
 import CardModal from "../Modal/CardModal";
+
 const HomePage = ({onBoardClick}) => {
   // Going to make an API call to the database holding Kudo Board information and map through for each data object
   const [boards, setBoards] = useState([]);
@@ -29,7 +30,6 @@ const HomePage = ({onBoardClick}) => {
             onBoardClick={onBoardClick}  // TODO - change this later to pass in board data
           />
         </Grid>
-        <CardModal></CardModal>
       </Container>
     </>
   );

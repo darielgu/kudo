@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Container, Grid, Button, Typography } from '@mui/material'
 import BoardCard from '../BoardCard';
+import CardModal from '../Modal/CardModal'
 
 const CardPage = ({boardId, boardTitle, onBackToHome}) => {
     // set cards useState
@@ -18,7 +19,8 @@ const CardPage = ({boardId, boardTitle, onBackToHome}) => {
         </Typography>
 
         <Grid container justifyContent="center" sx={{ mb: 4 }}> {/* mb for margin-bottom to separate from cards */}
-            <Button variant="contained">Create</Button>
+            {/* <Button variant="contained">Create</Button> */}
+            <CardModal/>
         </Grid>
         <Grid
         container

@@ -25,7 +25,7 @@ const CardModal = () => {
         }}
         variant="contained"
       >
-        Open Modal
+        Create
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
