@@ -4,7 +4,7 @@ import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
 import CardModal from "../Modal/CardModal";
-const HomePage = () => {
+const HomePage = ({onBoardClick}) => {
   // Going to make an API call to the database holding Kudo Board information and map through for each data object
   const [boards, setBoards] = useState([]);
   useEffect(() => {
@@ -26,6 +26,7 @@ const HomePage = () => {
             url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
             title="stock card"
             description="lorem"
+            onBoardClick={onBoardClick}  // TODO - change this later to pass in board data
           />
         </Grid>
         <CardModal></CardModal>
