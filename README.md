@@ -5,7 +5,9 @@ Starting Frontend:
 - cd kudo-frontend
 - npm i
 - npm run dev
-  Starting Backend:
+
+Starting Backend:
+
 - cd ./kudo-backend
 - npm i
 - npm start
