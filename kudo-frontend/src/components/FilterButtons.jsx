@@ -27,14 +27,7 @@ const FilterButtons = () => {
         </Grid>
       </Grid>
 
-      <Grid container justifyContent={"center"} sx = {{ mt: 5, mb: 3}}>
-        <Button
-          variant = "outlined"
-          // onClick = {() => setBoardModalOpen(true)} TODO - 
-        >
-          Create Board
-        </Button>
-      </Grid>
+      <Grid container justifyContent={"center"} sx={{ mt: 5, mb: 3 }}></Grid>
     </Container>
   );
 };

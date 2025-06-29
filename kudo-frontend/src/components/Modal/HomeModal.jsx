@@ -1,6 +1,6 @@
 import { Modal, Box, Typography, Button, TextField } from "@mui/material";
 import { useState } from "react";
-import "./BoardModal.css";
+import "./HomeModal.css";
 import axios from "axios";
 
 const BoardModal = ({ open, handleClose, information }) => {

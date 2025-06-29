@@ -4,6 +4,7 @@ import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
 import CardModal from "../Modal/CardModal";
+import HomeModal from "../Modal/HomeModal";
 const HomePage = ({ onBoardClick }) => {
   // Going to make an API call to the database holding Kudo Board information and map through for each data object
   const [boards, setBoards] = useState([]);
@@ -37,7 +38,7 @@ const HomePage = ({ onBoardClick }) => {
           Create card
         </Button>
 
-        <BoardModal open={open} handleClose={setClose} />
+        <HomeModal open={open} handleClose={setClose} />
         <Grid
           container
           direction={"row"}
