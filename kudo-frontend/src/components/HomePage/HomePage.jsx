@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, TextField } from "@mui/material";
 import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
-import BoardModal from "../Modal/BoardModal";
-const HomePage = () => {
+import CardModal from "../Modal/CardModal";
+const HomePage = ({ onBoardClick }) => {
+  // Going to make an API call to the database holding Kudo Board information and map through for each data object
   const [boards, setBoards] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -47,6 +48,7 @@ const HomePage = () => {
             url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
             title="stock card"
             description="lorem"
+            onBoardClick={onBoardClick} // TODO - change this later to pass in board data
           />
         </Grid>
       </Container>
