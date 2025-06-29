@@ -6,7 +6,7 @@ const FilterButtons = () => {
       <Grid
         container
         direction="row"
-        justifyContent="space-between"
+        justifyContent="center"
         spacing={2}
         my={3}
       >

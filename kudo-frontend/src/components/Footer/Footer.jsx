@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 
 function Copyright() {
   return (
-    <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
+    <Typography variant="body2" sx={{ mt: 1 }}>
       {"Copyright © "}
       <Link color="text.secondary" href="https://mui.com/"></Link>
       &nbsp;
@@ -24,7 +24,7 @@ export default function Footer() {
           flexDirection: "column",
           alignItems: "center",
           gap: { xs: 4, sm: 8 },
-          py: { xs: 8, sm: 10 },
+          py: { xs: 2, sm: 3 },
           textAlign: { sm: "center", md: "left" },
         }}
         maxWidth="xl"

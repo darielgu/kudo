@@ -11,10 +11,10 @@ function Navigation() {
   return (
     <>
       <CssBaseline />
-      <AppBar sx={{ bgcolor: "black" }} position="relative">
+      <AppBar sx={{ bgcolor: "white" }} position="relative">
         <Grid container spacing={0}>
           <Grid>
-            <Toolbar>KudoBoard</Toolbar>
+            <Toolbar sx={{ color: "black" }}>KudoBoard</Toolbar>
           </Grid>
         </Grid>
       </AppBar>

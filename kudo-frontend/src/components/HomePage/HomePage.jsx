@@ -1,21 +1,42 @@
 import React, { useEffect } from "react";
-import { Container, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
-import CardModal from "../Modal/CardModal";
+import BoardModal from "../Modal/BoardModal";
 const HomePage = () => {
-  // Going to make an API call to the database holding Kudo Board information and map through for each data object
   const [boards, setBoards] = useState([]);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    //
+    // Going to make an API call to the database holding Kudo Board information and map through for each data object
   }, []);
 
-  // going to need a useEffect method here to populate kudo cards
-
+  function setClose() {
+    // prop to send modal for closing modal
+    setOpen(false);
+  }
   return (
     <>
-      <Container sx={{ my: 8 }}>
+      <Container
+        sx={{
+          my: 8,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "white",
+        }}
+      >
+        <Button
+          variant="outlined"
+          sx={{ width: 300, mb: 4 }}
+          onClick={() => setOpen(true)}
+        >
+          Create card
+        </Button>
+
+        <BoardModal open={open} handleClose={setClose} />
         <Grid
           container
           direction={"row"}
@@ -28,7 +49,6 @@ const HomePage = () => {
             description="lorem"
           />
         </Grid>
-        <CardModal></CardModal>
       </Container>
     </>
   );
