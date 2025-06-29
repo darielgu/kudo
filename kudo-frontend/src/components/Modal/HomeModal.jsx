@@ -36,18 +36,19 @@ const BoardModal = ({ open, handleClose, information }) => {
             />
 
             <select id="category" name="category" sx={{ height: 200 }}>
-              <option value="Recents">Apple</option>
-              <option value="banana">Banana</option>
-              <option value="cherry">Cherry</option>
+              <option value="Recents">Recents</option>
+              <option value="Inspiration">Inspiration</option>
+              <option value="Funny">Funny</option>
             </select>
-            {/* </TextField> */}
             <TextField
               sx={{ width: "100%" }}
               id="author"
               label="Author"
               variant="outlined"
             />
-            <Button onClick={() => {}}>Submit</Button>
+            <Button sx={{ my: 5 }} variant="outlined" onClick={() => {}}>
+              Submit
+            </Button>
           </div>
         </Box>
       </Modal>
