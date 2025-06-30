@@ -13,7 +13,7 @@ const HomePage = ({ onBoardClick }) => {
   useEffect(() => {
     // Going to make an API call to the database holding Kudo Board information and map through for each data object
     try {
-      axios.get("http://localhost:3001/boards").then((response) => {
+      axios.get("http://localhost:3000/board").then((response) => {
         setBoards(response.data);
         console.log(response.data);
       });

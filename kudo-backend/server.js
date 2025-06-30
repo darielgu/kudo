@@ -6,10 +6,8 @@ const PORT = process.env.PORT;
 const FRONTEND = process.env.FRONTEND;
 import morgan from "morgan";
 import cors from "cors"; //need cors for FrontEnd connection
-const corsOptions = {
-  origin: `http://localhost:${FRONTEND}`, // Allow requests from FrontEnd port
-};
-app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 import boardRoutes from "./src/routes/boardRoutes.js";
