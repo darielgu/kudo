@@ -15,50 +15,48 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
     // will fetch ALL cards, no route for specific cards
     const fetchAllCards = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/card/`)
-        
+        const response = await axios.get(`http://localhost:3000/card/`);
+
         // filter cards by boardID
-        const boardCards = response.data.filter(card => card.board_id == parseInt(boardId));
-        console.log('cards for this board: ', boardCards)
+        const boardCards = response.data.filter(
+          (card) => card.board_id == parseInt(boardId)
+        );
+        console.log("cards for this board: ", boardCards);
 
-        setCards(boardCards)
-
+        setCards(boardCards);
       } catch (error) {
-        console.error("Error fetching cards: ", error)
+        console.error("Error fetching cards: ", error);
       }
-    }
+    };
 
     fetchAllCards();
-
-  }, [boardId, cards]); // refereshed by boardID
+  }, [boardId]); // refereshed by boardID
 
   // update like functionality => send put response to DB
   const addLike = async (cardId) => {
     try {
-      const currentCard = cards.find(card => card.id === cardId);
+      const currentCard = cards.find((card) => card.id === cardId);
       const hasLiked = likedCards.has(cardId);
-      
+
       // Calculate new likes count
-      const newLikes = hasLiked 
+      const newLikes = hasLiked
         ? Math.max((currentCard?.likes || 0) - 1, 0) // Unlike: decrease (but not below 0)
         : (currentCard?.likes || 0) + 1; // Like: increase
 
       // PUT response with new likes count
       const response = await axios.put(`http://localhost:3000/card/${cardId}`, {
-        likes: newLikes
+        likes: newLikes,
       });
 
       // Update local state
-      setCards(prevCards => 
-        prevCards.map(card => 
-          card.id === cardId 
-            ? { ...card, likes: newLikes }
-            : card
+      setCards((prevCards) =>
+        prevCards.map((card) =>
+          card.id === cardId ? { ...card, likes: newLikes } : card
         )
       );
 
       // Update liked cards tracking
-      setLikedCards(prev => {
+      setLikedCards((prev) => {
         const newSet = new Set(prev);
         if (hasLiked) {
           newSet.delete(cardId); // Remove from liked
@@ -67,34 +65,31 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
         }
         return newSet;
       });
-
     } catch (error) {
       console.error(error);
     }
   };
 
-
   // DELETE card function
-  const deleteCard =  async (cardId) => {
+  const deleteCard = async (cardId) => {
     try {
       // send DELETE request to backend
       await axios.delete(`http://localhost:3000/card/${cardId}`);
-      console.log("Card deleted successfully")
+      console.log("Card deleted successfully");
 
       // remove card from local state
-      setCards(prevCards => prevCards.filter(card => card.id !== cardId));
+      setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
 
       // also remove from liked cards if it was liked
-      setLikedCards(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(cardId);
-      return newSet;
-    });
+      setLikedCards((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(cardId);
+        return newSet;
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
-
+  };
 
   return (
     <>
@@ -114,10 +109,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
           {" "}
           {/* mb for margin-bottom to separate from cards */}
           {/* <Button variant="contained">Create</Button> */}
-          <CardModal 
-          boardId={boardId}
-          
-          />
+          <CardModal boardId={boardId} />
         </Grid>
         <Grid
           container
@@ -126,20 +118,20 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
           justifyContent={"center"}
         >
           {/* display cards linked to selected board, map the cards */}
-        {cards.map((card) => (
-          <Grid item key={card.id} xs={12} sm={6} md={4}>
-            <BoardCard
-              url={card.image_url}
-              title={card.message}
-              description={card.author}
-              likes = {card.likes}
-              id = {card.id}
-              onUpVote = {addLike}
-              isLiked={likedCards.has(card.id)} // pass whether has user liked this card
-              deleteCard={deleteCard}
-            />
-          </Grid>
-        ))}
+          {cards.map((card) => (
+            <Grid item key={card.id} xs={12} sm={6} md={4}>
+              <BoardCard
+                url={card.image_url}
+                title={card.message}
+                description={card.author}
+                likes={card.likes}
+                id={card.id}
+                onUpVote={addLike}
+                isLiked={likedCards.has(card.id)} // pass whether has user liked this card
+                deleteCard={deleteCard}
+              />
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </>
