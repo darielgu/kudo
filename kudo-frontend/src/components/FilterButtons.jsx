@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Container, Grid, Paper, Typography } from "@mui/material";
-const FilterButtons = () => {
+const FilterButtons = ({ onFilterChange }) => {
   return (
     <Container maxWidth="md">
       <Grid
@@ -11,19 +11,49 @@ const FilterButtons = () => {
         my={3}
       >
         <Grid>
-          <Button variant="contained">Home</Button>
+          <Button
+            id="all"
+            onClick={(e) => onFilterChange(e.target.id)}
+            variant="contained"
+          >
+            All
+          </Button>
         </Grid>
         <Grid>
-          <Button variant="contained">Recent</Button>
+          <Button
+            id="recent"
+            onClick={(e) => onFilterChange(e.target.id)}
+            variant="contained"
+          >
+            Recent
+          </Button>
         </Grid>
         <Grid>
-          <Button variant="contained">Celebration</Button>
+          <Button
+            id="celebration"
+            onClick={(e) => onFilterChange(e.target.id)}
+            variant="contained"
+          >
+            Celebration
+          </Button>
         </Grid>
         <Grid>
-          <Button variant="contained">Thank You</Button>
+          <Button
+            id="inspiration"
+            onClick={(e) => onFilterChange(e.target.id)}
+            variant="contained"
+          >
+            Inspiration
+          </Button>
         </Grid>
         <Grid>
-          <Button variant="contained">Inspiration</Button>
+          <Button
+            id="thankYou"
+            onClick={(e) => onFilterChange(e.target.id)}
+            variant="contained"
+          >
+            Thank You
+          </Button>
         </Grid>
       </Grid>
 

@@ -26,8 +26,6 @@ function App() {
       <Navigation />
       {selectedBoard === null ? (
         <>
-          <SearchBar />
-          <FilterButtons />
           <HomePage onBoardClick={handleBoardClick} />
         </>
       ) : (
