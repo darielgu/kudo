@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Typography, Button, TextField, Box } from "@mui/material";
 
-const SearchBar = () => {
-  // need to pass the value in here to HomePage.jsx and sort | also don't think we need this component
+const SearchBar = ({ textChange }) => {
   return (
     <Box mt={2} sx={{ display: "flex", justifyContent: "center" }}>
       <TextField
+        onInput={(e) => textChange(e.target.value)}
         label="Search boards..."
         variant="outlined"
         sx={{

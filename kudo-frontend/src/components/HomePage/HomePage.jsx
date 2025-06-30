@@ -5,15 +5,29 @@ import { useState } from "react";
 import axios from "axios";
 import FilterButtons from "../FilterButtons";
 import HomeModal from "../Modal/HomeModal";
+import SearchBar from "../SearchBar";
 const HomePage = ({ onBoardClick }) => {
   const [boards, setBoards] = useState([]);
   const [masterBoards, setMasterBoards] = useState([]);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState(null);
-
+  const [search, setSearch] = useState(null);
   const handleFilterChange = (newFilter) => {
     // handle getting a filter from the FilterButtons component
     setFilter(newFilter);
+  };
+  const handleTextChange = (newSearch) => {
+    // handle getting the search value from search bar
+    setSearch(newSearch);
+    if (newSearch != null && newSearch != "") {
+      const masterClone = structuredClone(masterBoards);
+      const filteredSearch = masterClone.filter((board) =>
+        board.title.toLowerCase().includes(newSearch.toLowerCase())
+      );
+      setBoards(filteredSearch);
+    } else {
+      setBoards(masterBoards);
+    }
   };
 
   useEffect(() => {
@@ -39,7 +53,6 @@ const HomePage = ({ onBoardClick }) => {
 
   useEffect(() => {
     // whenever filter changes we need to sort our boards
-    console.log(filter);
     if (!filter) return;
     if (filter === "recent") {
       const masterClone = structuredClone(masterBoards);
@@ -83,6 +96,7 @@ const HomePage = ({ onBoardClick }) => {
   }
   return (
     <>
+      <SearchBar textChange={handleTextChange} />
       <FilterButtons onFilterChange={handleFilterChange} />
       <Container
         sx={{
