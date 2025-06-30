@@ -2,7 +2,7 @@ import { Modal, Box, Typography, Button, TextField, Grid } from "@mui/material";
 import { useState } from "react";
 import axios from 'axios';
 
-const CardModal = ({ boardId }) => {
+const CardModal = ({ boardId, onCardCreated }) => {
   const [open, setOpen] = useState(false);
   const [gif, setGif] = useState("");
   const [gifResults, setGifResults] = useState([]);
@@ -83,6 +83,11 @@ const CardModal = ({ boardId }) => {
       });
 
       handleClose();
+
+      // Notify parent component to refresh cards list
+      if (onCardCreated) {
+        onCardCreated();
+      }
 
     } catch (error) {
         console.error("Error creating card:", error.response?.data || error.message);

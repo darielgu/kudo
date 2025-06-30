@@ -11,26 +11,25 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
   const [likedCards, setLikedCards] = useState(new Set());
 
   // fetch cards from API, set cards useState to array of cards
+  const fetchAllCards = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/card/`);
+
+      // filter cards by boardID
+      const boardCards = response.data.filter(
+        (card) => card.board_id == parseInt(boardId)
+      );
+      console.log("cards for this board: ", boardCards);
+
+      setCards(boardCards);
+    } catch (error) {
+      console.error("Error fetching cards: ", error);
+    }
+  };
+
   useEffect(() => {
-    // will fetch ALL cards, no route for specific cards
-    const fetchAllCards = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/card/`);
-
-        // filter cards by boardID
-        const boardCards = response.data.filter(
-          (card) => card.board_id == parseInt(boardId)
-        );
-        console.log("cards for this board: ", boardCards);
-
-        setCards(boardCards);
-      } catch (error) {
-        console.error("Error fetching cards: ", error);
-      }
-    };
-
     fetchAllCards();
-  }, [boardId]); // refereshed by boardID
+  }, [boardId]); // Only refresh when boardId changes, not when cards change
 
   // update like functionality => send put response to DB
   const addLike = async (cardId) => {
@@ -109,7 +108,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
           {" "}
           {/* mb for margin-bottom to separate from cards */}
           {/* <Button variant="contained">Create</Button> */}
-          <CardModal boardId={boardId} />
+          <CardModal boardId={boardId} onCardCreated={fetchAllCards} />
         </Grid>
         <Grid
           container
