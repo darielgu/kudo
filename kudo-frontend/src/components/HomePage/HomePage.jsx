@@ -26,7 +26,7 @@ const HomePage = ({ onBoardClick }) => {
         });
         // setBoards(response.data);
         setBoards(sortedBoards);
-        setMasterBoards(response.data);
+        setMasterBoards(response.data); // the master state of the boards -- never change
 
         console.log(response.data);
       } catch (error) {
@@ -42,22 +42,23 @@ const HomePage = ({ onBoardClick }) => {
     console.log(filter);
     if (!filter) return;
     if (filter === "recent") {
-      const recentBoards = masterBoards.sort((a, b) => {
-        return new Date(b.created_at) - new Date(a.created_at); // sort in descending order of date limit to 6 boards?
-      });
-      setBoards(recentBoards.slice(0, 6));
+      const masterClone = structuredClone(masterBoards);
+      setBoards(masterClone.slice(0, 6)); // just render 6
     } else if (filter === "celebration") {
-      const celebrationBoards = boards.filter((board) => {
+      const masterClone = structuredClone(masterBoards); // make a deep clone of the master boards and filter from them
+      const celebrationBoards = masterClone.filter((board) => {
         return board.category === "celebration";
       });
       setBoards(celebrationBoards);
     } else if (filter === "thankYou") {
-      const thankYouBoards = boards.filter((board) => {
+      const masterClone = structuredClone(masterBoards);
+      const thankYouBoards = masterClone.filter((board) => {
         return board.category === "thankYou";
       });
       setBoards(thankYouBoards);
     } else if (filter === "inspiration") {
-      const inspirationBoards = boards.filter((board) => {
+      const masterClone = structuredClone(masterBoards);
+      const inspirationBoards = masterClone.filter((board) => {
         return board.category === "inspiration";
       });
       setBoards(inspirationBoards);
