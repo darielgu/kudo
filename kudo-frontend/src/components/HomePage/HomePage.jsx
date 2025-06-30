@@ -3,17 +3,20 @@ import { Button, Container, Grid, TextField } from "@mui/material";
 import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
-import CardModal from "../Modal/CardModal";
+import FilterButtons from "../FilterButtons";
 import HomeModal from "../Modal/HomeModal";
 const HomePage = ({ onBoardClick }) => {
-  // Going to make an API call to the database holding Kudo Board information and map through for each data object
   const [boards, setBoards] = useState([]);
   const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState(null);
+
+  const handleFilterChange = (newFilter) => {
+    // handle getting a filter from the FilterButtons component
+    setFilter(newFilter);
+  };
 
   useEffect(() => {
-    // Going to make an API call to the database holding Kudo Board information and map through for each data object
     const fetchBoards = async () => {
-      // Function must be async to use await
       try {
         const response = await axios.get("http://localhost:3000/board"); // Code "pauses" here until the Promise resolves
         setBoards(response.data);
@@ -25,9 +28,16 @@ const HomePage = ({ onBoardClick }) => {
 
     fetchBoards();
   }, [boards]);
+
+  useEffect(() => {
+    // whenever filter changes we need to sort our boards
+    if (!filter) return;
+
+    console.log(filter);
+  }, [filter]);
+
   async function onBoardDelete(id) {
     // prop-func to pass into cardMedia for deleting a board
-    console.log(id);
     try {
       await axios.delete(`http://localhost:3000/board/${id}`);
       // instead of window reload, just setBoards prev.filter removing the id
@@ -42,6 +52,7 @@ const HomePage = ({ onBoardClick }) => {
   }
   return (
     <>
+      <FilterButtons onFilterChange={handleFilterChange} />
       <Container
         sx={{
           my: 8,
@@ -78,6 +89,7 @@ const HomePage = ({ onBoardClick }) => {
                 key={board.id}
                 onBoardClick={onBoardClick} // TODO - change this to pass in board data to Card Page view
                 onBoardDelete={onBoardDelete}
+                date={board.created_at}
               />
             );
           })}

@@ -12,6 +12,7 @@ export default function MediaCard({
   id,
   onBoardClick,
   onBoardDelete,
+  date,
 }) {
   return (
     <Card sx={{ width: 305, height: 450 }}>
