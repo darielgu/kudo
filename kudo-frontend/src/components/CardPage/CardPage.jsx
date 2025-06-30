@@ -38,7 +38,9 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
           {" "}
           {/* mb for margin-bottom to separate from cards */}
           {/* <Button variant="contained">Create</Button> */}
-          <CardModal />
+          <CardModal 
+          boardId={boardId}
+          />
         </Grid>
         <Grid
           container

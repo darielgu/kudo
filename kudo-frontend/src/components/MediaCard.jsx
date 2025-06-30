@@ -28,7 +28,7 @@ export default function MediaCard({
         <Button
           size="small"
           onClick={() =>
-            onBoardClick({ id: "test-board-id", title: "test-board-title" })
+            onBoardClick({ id: id, title: title })
           } // TODO - change this later to pass in board data
         >
           View
