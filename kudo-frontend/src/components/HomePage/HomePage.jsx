@@ -12,14 +12,18 @@ const HomePage = ({ onBoardClick }) => {
 
   useEffect(() => {
     // Going to make an API call to the database holding Kudo Board information and map through for each data object
-    try {
-      axios.get("http://localhost:3000/board").then((response) => {
+    const fetchBoards = async () => {
+      // Function must be async to use await
+      try {
+        const response = await axios.get("http://localhost:3000/board"); // Code "pauses" here until the Promise resolves
         setBoards(response.data);
         console.log(response.data);
-      });
-    } catch (error) {
-      console.error("Error fetching boards:", error);
-    }
+      } catch (error) {
+        console.error("Error fetching boards:", error);
+      }
+    };
+
+    fetchBoards();
   }, []);
 
   function setClose() {
@@ -54,6 +58,18 @@ const HomePage = ({ onBoardClick }) => {
           justifyContent={"center"}
         >
           {/* display boards through a map */}
+          {boards.map((board, index) => {
+            return (
+              <MediaCard
+                url={board.image_url}
+                title={board.title}
+                description={board.description}
+                id={board.id}
+                key={board.id}
+                onBoardClick={onBoardClick} // TODO - change this to pass in board data to Card Page view
+              />
+            );
+          })}
 
           <MediaCard
             url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
