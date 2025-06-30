@@ -24,11 +24,14 @@ const HomePage = ({ onBoardClick }) => {
     };
 
     fetchBoards();
-  }, []);
+  }, [boards]);
   async function onBoardDelete(id) {
     // prop-func to pass into cardMedia for deleting a board
+    console.log(id);
     try {
-      await axios.delete(`http//localhose:3000/board/:id`);
+      await axios.delete(`http://localhost:3000/board/${id}`);
+      // instead of window reload, just setBoards prev.filter removing the id
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
