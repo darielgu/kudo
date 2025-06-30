@@ -7,13 +7,18 @@ import CardModal from "../Modal/CardModal";
 const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
   // set cards useState
   const [cards, setCards] = useState([]);
-
+  // TODO - fetch cards from api, set cards useState to an array of cards
+  // TODO - display cards in a grid
   // fetch cards from api, set cards useState to an array of cards
-  useEffect(() => {
-    fetch(`http://localhost:3001/cards/${boardId}`)
-      .then((response) => response.json())
-      .then((data) => setCards(data));
-  }, [boardId]);
+  //   useEffect(() => {
+  //    try{
+  //      axios.get(`http://localhost:3001/cards/${boardId}`)
+  //       .then((response) => response.json())
+  //       .then((data) => setCards(data));
+  //    } catch (error) {
+  //      console.error("Error fetching cards:", error);
+  //    }
+  //   }, []);
 
   return (
     <>
