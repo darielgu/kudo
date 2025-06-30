@@ -160,8 +160,14 @@ const CardModal = ({ boardId }) => {
                           cursor: "pointer",
                           display: "block",
                         }}
-                        onClick={() => setSelectedGif(gifObj.embed_url)}
-                      />
+onClick={() => {
+  const gifUrl = gifObj.images.fixed_height.url; // Use direct GIF URL, not embed
+  setSelectedGif(gifUrl);
+  setFormCardData(prev => ({
+    ...prev,
+    image_url: gifUrl
+  }));
+}}                      />
                     </Grid>
                   ))}
                 </Grid>
