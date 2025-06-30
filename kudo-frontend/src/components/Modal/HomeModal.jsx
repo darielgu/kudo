@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./HomeModal.css";
 import axios from "axios";
 
-const BoardModal = ({ open, handleClose, information }) => {
+const BoardModal = ({ open, handleClose }) => {
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -43,7 +43,7 @@ const BoardModal = ({ open, handleClose, information }) => {
 
       // POST request to create new board
       const response = await axios.post(
-        "http://localhost:3001/board",
+        "http://localhost:3000/board",
         formData
       );
       console.log("Board created successfully:", response.data);
@@ -61,7 +61,7 @@ const BoardModal = ({ open, handleClose, information }) => {
       handleClose();
 
       // refresh the boards list
-      window.location.reload(); // reload the page to show the new board
+      // window.location.reload(); // reload the page to show the new board | not needed
     } catch (error) {
       console.error("Error creating board:", error);
       alert("Failed to create board. Please try again.");
