@@ -7,6 +7,7 @@ import FilterButtons from "../FilterButtons";
 import HomeModal from "../Modal/HomeModal";
 const HomePage = ({ onBoardClick }) => {
   const [boards, setBoards] = useState([]);
+  const [masterBoards, setMasterBoards] = useState([]);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState(null);
 
@@ -19,7 +20,14 @@ const HomePage = ({ onBoardClick }) => {
     const fetchBoards = async () => {
       try {
         const response = await axios.get("http://localhost:3000/board"); // Code "pauses" here until the Promise resolves
-        setBoards(response.data);
+        const sortedBoards = response.data.sort((a, b) => {
+          // auto set board in descending by creation date
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+        // setBoards(response.data);
+        setBoards(sortedBoards);
+        setMasterBoards(response.data);
+
         console.log(response.data);
       } catch (error) {
         console.error("Error fetching boards:", error);
@@ -27,13 +35,35 @@ const HomePage = ({ onBoardClick }) => {
     };
 
     fetchBoards();
-  }, [boards]);
+  }, []);
 
   useEffect(() => {
     // whenever filter changes we need to sort our boards
-    if (!filter) return;
-
     console.log(filter);
+    if (!filter) return;
+    if (filter === "recent") {
+      const recentBoards = masterBoards.sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at); // sort in descending order of date limit to 6 boards?
+      });
+      setBoards(recentBoards.slice(0, 6));
+    } else if (filter === "celebration") {
+      const celebrationBoards = boards.filter((board) => {
+        return board.category === "celebration";
+      });
+      setBoards(celebrationBoards);
+    } else if (filter === "thankYou") {
+      const thankYouBoards = boards.filter((board) => {
+        return board.category === "thankYou";
+      });
+      setBoards(thankYouBoards);
+    } else if (filter === "inspiration") {
+      const inspirationBoards = boards.filter((board) => {
+        return board.category === "inspiration";
+      });
+      setBoards(inspirationBoards);
+    } else if (filter === "all") {
+      setBoards(masterBoards);
+    }
   }, [filter]);
 
   async function onBoardDelete(id) {
@@ -94,12 +124,12 @@ const HomePage = ({ onBoardClick }) => {
             );
           })}
 
-          <MediaCard
+          {/* <MediaCard
             url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
             title="stock card"
             description="lorem"
             onBoardClick={onBoardClick} // TODO - change this later to pass in board data
-          />
+          /> */}
         </Grid>
       </Container>
     </>

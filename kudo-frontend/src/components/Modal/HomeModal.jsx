@@ -61,7 +61,7 @@ const BoardModal = ({ open, handleClose }) => {
       handleClose();
 
       // refresh the boards list
-      // window.location.reload(); // reload the page to show the new board | not needed
+      window.location.reload(); // reload the page to show the new board | not needed
     } catch (error) {
       console.error("Error creating board:", error);
       alert("Failed to create board. Please try again.");
@@ -101,10 +101,9 @@ const BoardModal = ({ open, handleClose }) => {
               required
             >
               <option value="">Select a category</option>
-              <option value="Recents">Recents</option>
-              <option value="Celebration">Celebration</option>
-              <option value="Inspiration">Inspiration</option>
-              <option value="Thank You">Thank You</option>
+              <option value="celebration">Celebration</option>
+              <option value="inspiration">Inspiration</option>
+              <option value="thankYou">Thank You</option>
             </select>
 
             <TextField

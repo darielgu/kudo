@@ -39,20 +39,20 @@ const FilterButtons = ({ onFilterChange }) => {
         </Grid>
         <Grid>
           <Button
-            id="thankYou"
-            onClick={(e) => onFilterChange(e.target.id)}
-            variant="contained"
-          >
-            Thank You
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
             id="inspiration"
             onClick={(e) => onFilterChange(e.target.id)}
             variant="contained"
           >
             Inspiration
+          </Button>
+        </Grid>
+        <Grid>
+          <Button
+            id="thankYou"
+            onClick={(e) => onFilterChange(e.target.id)}
+            variant="contained"
+          >
+            Thank You
           </Button>
         </Grid>
       </Grid>
