@@ -12,6 +12,14 @@ const HomePage = ({ onBoardClick }) => {
 
   useEffect(() => {
     // Going to make an API call to the database holding Kudo Board information and map through for each data object
+    try {
+      axios.get("http://localhost:3001/boards").then((response) => {
+        setBoards(response.data);
+        console.log(response.data);
+      });
+    } catch (error) {
+      console.error("Error fetching boards:", error);
+    }
   }, []);
 
   function setClose() {
@@ -45,6 +53,8 @@ const HomePage = ({ onBoardClick }) => {
           spacing={10}
           justifyContent={"center"}
         >
+          {/* display boards through a map */}
+
           <MediaCard
             url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
             title="stock card"

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const CardModal = () => {
   const [open, setOpen] = useState(false);
+  const [gif, setGif] = useState("");
   const handleClose = () => setOpen(false);
 
   const style = {
@@ -30,7 +31,15 @@ const CardModal = () => {
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <div className="form-container">
-            <Typography variant = 'h5' component='h5' align = 'center' sx={{fontWeight: "bold"}}> Create a New Card </Typography>
+            <Typography
+              variant="h5"
+              component="h5"
+              align="center"
+              sx={{ fontWeight: "bold" }}
+            >
+              {" "}
+              Create a New Card{" "}
+            </Typography>
             <TextField
               sx={{ width: "100%", my: 5 }}
               id="title"
@@ -48,25 +57,39 @@ const CardModal = () => {
               id="gif"
               label="Search GIFs.."
               variant="outlined"
+              onChange={(e) => {
+                setGif(e.target.value);
+              }}
             />
-            <Button>Search gif</Button>
+            <Button
+              onClick={() => {
+                // search gifs,
+                // display 6 gifs in a grid
+                // allow user to select a gif
+                // set gif to state
+                // close modal
+                // display gif in text field
+              }}
+            >
+              Search gif
+            </Button>
             <TextField
-              sx={{ width: "100%", mt: 2}}
+              sx={{ width: "100%", mt: 2 }}
               id="gif-url"
               label="Enter GIF URL"
               variant="outlined"
             />
             <Button> Copy GIF URL</Button>
             <TextField
-              sx={{ width: "100%", mt: 2}}
+              sx={{ width: "100%", mt: 2 }}
               id="enter-owner"
               label="Enter Owner (optional)"
               variant="outlined"
             />
 
             {/* Button at bottom - center of modal */}
-            <Box sx = {{display : 'flex', justifyContent: 'center', mt: 3}}>
-              <Button variant ='contained'> Create Card </Button>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+              <Button variant="contained"> Create Card </Button>
             </Box>
           </div>
         </Box>
