@@ -5,7 +5,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-export default function MediaCard({ url, title, description, id, onBoardClick }) {
+export default function MediaCard({
+  url,
+  title,
+  description,
+  id,
+  onBoardClick,
+  onBoardDelete,
+}) {
   return (
     <Card sx={{ width: 305, height: 450 }}>
       <CardMedia sx={{ height: 250 }} image={url} />
@@ -18,12 +25,17 @@ export default function MediaCard({ url, title, description, id, onBoardClick })
         </Typography>
       </CardContent>
       <CardActions>
-        <Button 
-        size="small"
-        onClick={() => onBoardClick({id: 'test-board-id', title: 'test-board-title'})}  // TODO - change this later to pass in board data
-         >View
+        <Button
+          size="small"
+          onClick={() =>
+            onBoardClick({ id: "test-board-id", title: "test-board-title" })
+          } // TODO - change this later to pass in board data
+        >
+          View
         </Button>
-        <Button size="small">Delete</Button>
+        <Button size="small" onClick={() => onBoardDelete(id)}>
+          Delete
+        </Button>
       </CardActions>
     </Card>
   );

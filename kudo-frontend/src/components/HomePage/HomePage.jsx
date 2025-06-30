@@ -25,7 +25,14 @@ const HomePage = ({ onBoardClick }) => {
 
     fetchBoards();
   }, []);
-
+  async function onBoardDelete(id) {
+    // prop-func to pass into cardMedia for deleting a board
+    try {
+      await axios.delete(`http//localhose:3000/board/:id`);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   function setClose() {
     // prop to send modal for closing modal
     setOpen(false);
@@ -67,6 +74,7 @@ const HomePage = ({ onBoardClick }) => {
                 id={board.id}
                 key={board.id}
                 onBoardClick={onBoardClick} // TODO - change this to pass in board data to Card Page view
+                onBoardDelete={onBoardDelete}
               />
             );
           })}
