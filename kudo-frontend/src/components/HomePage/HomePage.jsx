@@ -6,6 +6,8 @@ import axios from "axios";
 import FilterButtons from "../FilterButtons";
 import HomeModal from "../Modal/HomeModal";
 import SearchBar from "../SearchBar";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
 const HomePage = ({ onBoardClick }) => {
   const [boards, setBoards] = useState([]);
   const [masterBoards, setMasterBoards] = useState([]);
@@ -94,59 +96,73 @@ const HomePage = ({ onBoardClick }) => {
     // prop to send modal for closing modal
     setOpen(false);
   }
+
+  // material ui THEME
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#0970b5",
+      },
+    },
+  });
+
   return (
     <>
-      <SearchBar textChange={handleTextChange} />
-      <FilterButtons onFilterChange={handleFilterChange} />
-      <Container
-        sx={{
-          my: 8,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white",
-        }}
-      >
-        <Button
-          variant="outlined"
-          sx={{ width: 300, mb: 4 }}
-          onClick={() => setOpen(true)}
-        >
-          Create card
-        </Button>
+      <div className="root">
+        <ThemeProvider theme={theme}>
+          <SearchBar textChange={handleTextChange} />
+          <FilterButtons onFilterChange={handleFilterChange} />
+          <Container
+            sx={{
+              my: 8,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "white",
+            }}
+          >
+            <Button
+              variant="outlined"
+              sx={{ width: 300, mb: 4 }}
+              onClick={() => setOpen(true)}
+            >
+              Create card
+            </Button>
 
-        <HomeModal open={open} handleClose={setClose} />
-        <Grid
-          container
-          direction={"row"}
-          spacing={10}
-          justifyContent={"center"}
-        >
-          {/* display boards through a map */}
-          {boards.map((board, index) => {
-            return (
-              <MediaCard
-                url={board.image_url}
-                title={board.title}
-                description={board.description}
-                id={board.id}
-                key={board.id}
-                onBoardClick={onBoardClick} // TODO - change this to pass in board data to Card Page view
-                onBoardDelete={onBoardDelete}
-                date={board.created_at}
-              />
-            );
-          })}
+            <HomeModal open={open} handleClose={setClose} />
+            <Grid
+              container
+              direction={"row"}
+              spacing={10}
+              justifyContent={"center"}
+            >
+              {/* display boards through a map */}
+              {boards.map((board, index) => {
+                return (
+                  <MediaCard
+                    url={board.image_url}
+                    title={board.title}
+                    description={board.description}
+                    id={board.id}
+                    key={board.id}
+                    onBoardClick={onBoardClick} // TODO - change this to pass in board data to Card Page view
+                    onBoardDelete={onBoardDelete}
+                    date={board.created_at}
+                  />
+                );
+              })}
 
-          {/* <MediaCard
+              {/* <MediaCard
             url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
             title="stock card"
             description="lorem"
             onBoardClick={onBoardClick} // TODO - change this later to pass in board data
           /> */}
-        </Grid>
-      </Container>
+            </Grid>
+          </Container>
+        </ThemeProvider>
+      </div>
     </>
   );
 };
