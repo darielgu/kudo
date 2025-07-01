@@ -9,6 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import Sticky from "@mui/icons-material/StickyNote2";
+import { motion } from "motion/react";
+
 function Navigation() {
   return (
     <>
@@ -29,7 +31,11 @@ function Navigation() {
                 height: 2,
               }}
             >
-              KudoBoard <Sticky />
+              KudoBoard{" "}
+              <motion.div whileHover={{ scale: 1.1 }} animate={{ rotate: 360 }}>
+                {" "}
+                <Sticky />{" "}
+              </motion.div>
             </Toolbar>
           </Grid>
         </Grid>
