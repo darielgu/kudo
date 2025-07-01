@@ -8,6 +8,7 @@ import {
   CssBaseline,
   Button,
 } from "@mui/material";
+import Sticky from "@mui/icons-material/StickyNote2";
 function Navigation() {
   return (
     <>
@@ -20,7 +21,16 @@ function Navigation() {
           alignItems="center"
         >
           <Grid>
-            <Toolbar sx={{ color: "black" }}>KudoBoard</Toolbar>
+            <Toolbar
+              sx={{
+                color: "black",
+                background: "clear",
+                p: 0,
+                height: 2,
+              }}
+            >
+              KudoBoard <Sticky />
+            </Toolbar>
           </Grid>
         </Grid>
       </AppBar>

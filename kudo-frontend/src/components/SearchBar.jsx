@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Typography, Button, TextField, Box } from "@mui/material";
 
 const SearchBar = ({ textChange }) => {
-  const [text, setText] = useState(null);
+  const [text, setText] = useState("");
   return (
     <Box mt={0} pt={2} sx={{ display: "flex", justifyContent: "center" }}>
       <TextField
