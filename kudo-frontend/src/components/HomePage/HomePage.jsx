@@ -36,7 +36,7 @@ const HomePage = ({ onBoardClick }) => {
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/board");
+        const response = await axios.get("https://kudo-backend-3vyv.onrender.com/board");
         const sortedBoards = response.data.sort((a, b) => {
           return new Date(b.created_at) - new Date(a.created_at);
         });
@@ -80,7 +80,7 @@ const HomePage = ({ onBoardClick }) => {
 
   async function onBoardDelete(id) {
     try {
-      await axios.delete(`http://localhost:3000/board/${id}`);
+      await axios.delete(`https://kudo-backend-3vyv.onrender.com/board/${id}`);
       window.location.reload();
     } catch (err) {
       console.log(err);

@@ -26,7 +26,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
   // fetch cards from API, set cards useState to array of cards
   const fetchAllCards = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/card/`);
+      const response = await axios.get(`https://kudo-backend-3vyv.onrender.com/card/`);
 
       // filter cards by boardID
       const boardCards = response.data.filter(
@@ -77,7 +77,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
         : (currentCard?.likes || 0) + 1; // Like: increase
 
       // PUT response with new likes count
-      const response = await axios.put(`http://localhost:3000/card/${cardId}`, {
+      const response = await axios.put(`https://kudo-backend-3vyv.onrender.com/card/${cardId}`, {
         likes: newLikes,
       });
 
@@ -107,7 +107,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
   const deleteCard = async (cardId) => {
     try {
       // send DELETE request to backend
-      await axios.delete(`http://localhost:3000/card/${cardId}`);
+      await axios.delete(`https://kudo-backend-3vyv.onrender.com/card/${cardId}`);
       console.log("Card deleted successfully");
 
       // remove card from local state

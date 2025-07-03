@@ -72,7 +72,7 @@ const CardModal = ({ boardId, onCardCreated }) => {
         author: formCardData.author || ""
       };
 
-      const response = await axios.post('http://localhost:3000/card', cardData);
+      const response = await axios.post('https://kudo-backend-3vyv.onrender.com/card', cardData);
       console.log("Card created successfully:", response.data);
 
       // Reset form data
