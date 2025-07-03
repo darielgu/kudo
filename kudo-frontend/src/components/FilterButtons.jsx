@@ -1,63 +1,68 @@
 import React, { useState } from "react";
-import { Button, Container, Grid, Paper, Typography } from "@mui/material";
-const FilterButtons = ({ onFilterChange }) => {
-  return (
-    <Container maxWidth="md">
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        spacing={2}
-        my={3}
-      >
-        <Grid>
-          <Button
-            id="all"
-            onClick={(e) => onFilterChange(e.target.id)}
-            variant="contained"
-          >
-            All
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
-            id="recent"
-            onClick={(e) => onFilterChange(e.target.id)}
-            variant="contained"
-          >
-            Recent
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
-            id="celebration"
-            onClick={(e) => onFilterChange(e.target.id)}
-            variant="contained"
-          >
-            Celebration
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
-            id="inspiration"
-            onClick={(e) => onFilterChange(e.target.id)}
-            variant="contained"
-          >
-            Inspiration
-          </Button>
-        </Grid>
-        <Grid>
-          <Button
-            id="thankYou"
-            onClick={(e) => onFilterChange(e.target.id)}
-            variant="contained"
-          >
-            Thank You
-          </Button>
-        </Grid>
-      </Grid>
+import { Button, Container, Box } from "@mui/material";
+import { useTheme } from "../context/ThemeContext.jsx";
 
-      <Grid container justifyContent={"center"} sx={{ mt: 5, mb: 3 }}></Grid>
+const FilterButtons = ({ onFilterChange }) => {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const { colors, shadows } = useTheme();
+
+  const handleFilterClick = (filterId) => {
+    setActiveFilter(filterId);
+    onFilterChange(filterId);
+  };
+
+  const filterButtons = [
+    { id: "all", label: "All" },
+    { id: "recent", label: "Recent" },
+    { id: "celebration", label: "Celebration" },
+    { id: "inspiration", label: "Inspiration" },
+    { id: "thankYou", label: "Thank You" },
+  ];
+
+  return (
+    <Container maxWidth="lg">
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 2,
+          my: 4,
+          flexWrap: "wrap"
+        }}
+      >
+        {filterButtons.map((button) => (
+          <Button
+            key={button.id}
+            id={button.id}
+            onClick={(e) => handleFilterClick(e.target.id)}
+            variant={activeFilter === button.id ? "contained" : "outlined"}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1,
+              fontWeight: 500,
+              fontSize: '0.9rem',
+              textTransform: 'none',
+              minWidth: 100,
+              backgroundColor: activeFilter === button.id ? colors.primary : 'transparent',
+              color: activeFilter === button.id ? 'white' : colors.textSecondary,
+              borderColor: activeFilter === button.id ? 'transparent' : colors.border,
+              boxShadow: activeFilter === button.id ? shadows.small : 'none',
+              '&:hover': {
+                backgroundColor: activeFilter === button.id 
+                  ? colors.primary 
+                  : colors.surface,
+                opacity: activeFilter === button.id ? 0.9 : 1,
+                boxShadow: activeFilter === button.id ? shadows.medium : shadows.small,
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            {button.label}
+          </Button>
+        ))}
+      </Box>
     </Container>
   );
 };

@@ -4,24 +4,58 @@ import { Container, Grid, Button, Typography } from "@mui/material";
 import BoardCard from "../BoardCard";
 import CardModal from "../Modal/CardModal";
 import axios from "axios";
+import { useTheme } from "../../context/ThemeContext.jsx";
 
 const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
   // set cards useState
   const [cards, setCards] = useState([]);
   const [likedCards, setLikedCards] = useState(new Set());
+  const { isDarkMode } = useTheme();
+
+  // Get pinned cards from localStorage
+  const getPinnedCards = () => {
+    const pinned = localStorage.getItem(`pinned_cards_${boardId}`);
+    return pinned ? JSON.parse(pinned) : {};
+  };
+
+  // Save pinned cards to localStorage
+  const savePinnedCards = (pinnedCards) => {
+    localStorage.setItem(`pinned_cards_${boardId}`, JSON.stringify(pinnedCards));
+  };
 
   // fetch cards from API, set cards useState to array of cards
   const fetchAllCards = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/card/`);
+      const response = await axios.get(`https://kudo-backend-3vyv.onrender.com/card/`);
 
       // filter cards by boardID
       const boardCards = response.data.filter(
         (card) => card.board_id == parseInt(boardId)
       );
-      console.log("cards for this board: ", boardCards);
+      
+      // Add pinned status from localStorage
+      const pinnedCards = getPinnedCards();
+      const cardsWithPinnedStatus = boardCards.map(card => ({
+        ...card,
+        pinned: pinnedCards[card.id]?.pinned || false,
+        pinned_at: pinnedCards[card.id]?.pinned_at || null
+      }));
 
-      setCards(boardCards);
+      // Sort: pinned first (most recent pinned_at first), then unpinned by id desc
+      const sortedCards = cardsWithPinnedStatus.sort((a, b) => {
+        if (a.pinned && b.pinned) {
+          return new Date(b.pinned_at) - new Date(a.pinned_at);
+        } else if (a.pinned) {
+          return -1;
+        } else if (b.pinned) {
+          return 1;
+        } else {
+          return b.id - a.id;
+        }
+      });
+
+      console.log("cards for this board: ", sortedCards);
+      setCards(sortedCards);
     } catch (error) {
       console.error("Error fetching cards: ", error);
     }
@@ -43,7 +77,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
         : (currentCard?.likes || 0) + 1; // Like: increase
 
       // PUT response with new likes count
-      const response = await axios.put(`http://localhost:3000/card/${cardId}`, {
+      const response = await axios.put(`https://kudo-backend-3vyv.onrender.com/card/${cardId}`, {
         likes: newLikes,
       });
 
@@ -73,7 +107,7 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
   const deleteCard = async (cardId) => {
     try {
       // send DELETE request to backend
-      await axios.delete(`http://localhost:3000/card/${cardId}`);
+      await axios.delete(`https://kudo-backend-3vyv.onrender.com/card/${cardId}`);
       console.log("Card deleted successfully");
 
       // remove card from local state
@@ -90,6 +124,52 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
     }
   };
 
+  // Pin/unpin card using localStorage
+  const togglePin = (cardId) => {
+    const pinnedCards = getPinnedCards();
+    const currentCard = cards.find(card => card.id === cardId);
+    const isPinned = currentCard?.pinned || false;
+    
+    if (isPinned) {
+      // Unpin: remove from pinned cards
+      delete pinnedCards[cardId];
+    } else {
+      // Pin: add to pinned cards with timestamp
+      pinnedCards[cardId] = {
+        pinned: true,
+        pinned_at: new Date().toISOString()
+      };
+    }
+    
+    savePinnedCards(pinnedCards);
+    
+    // Update local state
+    setCards((prevCards) => {
+      const newCards = prevCards.map(card => 
+        card.id === cardId 
+          ? { 
+              ...card, 
+              pinned: !isPinned, 
+              pinned_at: isPinned ? null : new Date().toISOString() 
+            }
+          : card
+      );
+      
+      // Sort: pinned first (most recent pinned_at first), then unpinned by id desc
+      return newCards.sort((a, b) => {
+        if (a.pinned && b.pinned) {
+          return new Date(b.pinned_at) - new Date(a.pinned_at);
+        } else if (a.pinned) {
+          return -1;
+        } else if (b.pinned) {
+          return 1;
+        } else {
+          return b.id - a.id;
+        }
+      });
+    });
+  };
+
   return (
     <>
       <Container sx={{ my: 8 }}>
@@ -100,7 +180,10 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
             Back to Home{" "}
           </Button>
         </Grid>
-        <Typography variant="h4" sx={{ mb: 4 }} textAlign="center">
+        <Typography
+          variant="h4"
+          sx={{ mb: 4, textAlign: "center", color: isDarkMode ? "#fff" : undefined }}
+        >
           {boardTitle}
         </Typography>
 
@@ -128,6 +211,8 @@ const CardPage = ({ boardId, boardTitle, onBackToHome }) => {
                 onUpVote={addLike}
                 isLiked={likedCards.has(card.id)} // pass whether has user liked this card
                 deleteCard={deleteCard}
+                pinned={card.pinned}
+                onPin={togglePin}
               />
             </Grid>
           ))}

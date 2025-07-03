@@ -43,7 +43,7 @@ const BoardModal = ({ open, handleClose }) => {
 
       // POST request to create new board
       const response = await axios.post(
-        "http://localhost:3000/board",
+        "https://kudo-backend-3vyv.onrender.com/board",
         formData
       );
       console.log("Board created successfully:", response.data);

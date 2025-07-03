@@ -28,5 +28,7 @@ model Cards{
     image_url String
     likes Int @default(0)
     author String?
+    pinned Boolean @default(false)
+    pinned_at DateTime?
     board Board @relation(fields: [board_id], references: [id], onDelete: Cascade)
 }
