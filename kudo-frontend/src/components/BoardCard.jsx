@@ -4,10 +4,11 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import PushPinIcon from '@mui/icons-material/PushPin';
 
-export default function BoardCard({ url, title, description, likes, id, onUpVote, deleteCard}) {
+export default function BoardCard({ url, title, description, likes, id, onUpVote, deleteCard, pinned, onPin }) {
   return (
-    <Card sx={{ width: 305, height: 450 }}>
+    <Card sx={{ width: 305, height: 450, border: pinned ? '2px solid #ef4444' : undefined }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
@@ -16,18 +17,26 @@ export default function BoardCard({ url, title, description, likes, id, onUpVote
           {description}
         </Typography>
       </CardContent>
-        <CardMedia sx={{ height: 250 }} image={url} />
+      <CardMedia sx={{ height: 250 }} image={url} />
       <CardActions>
         <Button 
           size="small"
-          onClick = {() => onUpVote(id)}
+          onClick={() => onUpVote(id)}
         >Upvote </Button>
         <Button 
           size="small"
-          onClick = {() => deleteCard(id)}
+          onClick={() => deleteCard(id)}
         >Delete</Button>
+        <Button
+          size="small"
+          onClick={() => onPin(id)}
+          sx={{ color: pinned ? '#ef4444' : '#64748b', fontWeight: 600 }}
+        >
+          <PushPinIcon sx={{ color: pinned ? '#ef4444' : '#64748b', mr: 0.5 }} />
+          {pinned ? 'Unpin' : 'Pin'}
+        </Button>
       </CardActions>
-        <CardContent sx={{ pt: 0, textAlign: 'center' }}>
+      <CardContent sx={{ pt: 0, textAlign: 'center' }}>
         <Typography variant="body2" textAlign="left" sx={{ color: "text.secondary" }}>
           {likes || 0} likes
         </Typography>
@@ -36,5 +45,3 @@ export default function BoardCard({ url, title, description, likes, id, onUpVote
   );
 }
 
-
-// on click upvote button => call addLike function, send a put request to DB update like #, dependency useEffct, refresh

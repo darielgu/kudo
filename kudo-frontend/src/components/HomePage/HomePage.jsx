@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Button, Container, Grid, TextField } from "@mui/material";
+import React, { useEffect, useContext } from "react";
+import { Button, Container, Grid } from "@mui/material";
 import MediaCard from "../MediaCard";
 import { useState } from "react";
 import axios from "axios";
@@ -7,6 +7,7 @@ import FilterButtons from "../FilterButtons";
 import HomeModal from "../Modal/HomeModal";
 import SearchBar from "../SearchBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useTheme } from "../../context/ThemeContext.jsx";
 
 const HomePage = ({ onBoardClick }) => {
   const [boards, setBoards] = useState([]);
@@ -14,12 +15,12 @@ const HomePage = ({ onBoardClick }) => {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState(null);
   const [search, setSearch] = useState(null);
+  const { colors, shadows } = useTheme();
+
   const handleFilterChange = (newFilter) => {
-    // handle getting a filter from the FilterButtons component
     setFilter(newFilter);
   };
   const handleTextChange = (newSearch) => {
-    // handle getting the search value from search bar
     setSearch(newSearch);
     if (newSearch != null && newSearch != "") {
       const masterClone = structuredClone(masterBoards);
@@ -35,16 +36,12 @@ const HomePage = ({ onBoardClick }) => {
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/board"); // Code "pauses" here until the Promise resolves
+        const response = await axios.get("http://localhost:3000/board");
         const sortedBoards = response.data.sort((a, b) => {
-          // auto set board in descending by creation date
           return new Date(b.created_at) - new Date(a.created_at);
         });
-        // setBoards(response.data);
         setBoards(sortedBoards);
-        setMasterBoards(response.data); // the master state of the boards -- never change
-
-        console.log(response.data);
+        setMasterBoards(response.data);
       } catch (error) {
         console.error("Error fetching boards:", error);
       }
@@ -54,13 +51,12 @@ const HomePage = ({ onBoardClick }) => {
   }, []);
 
   useEffect(() => {
-    // whenever filter changes we need to sort our boards
     if (!filter) return;
     if (filter === "recent") {
       const masterClone = structuredClone(masterBoards);
-      setBoards(masterClone.slice(0, 6)); // just render 6
+      setBoards(masterClone.slice(0, 6));
     } else if (filter === "celebration") {
-      const masterClone = structuredClone(masterBoards); // make a deep clone of the master boards and filter from them
+      const masterClone = structuredClone(masterBoards);
       const celebrationBoards = masterClone.filter((board) => {
         return board.category === "celebration";
       });
@@ -80,28 +76,89 @@ const HomePage = ({ onBoardClick }) => {
     } else if (filter === "all") {
       setBoards(masterBoards);
     }
-  }, [filter]);
+  }, [filter, masterBoards]);
 
   async function onBoardDelete(id) {
-    // prop-func to pass into cardMedia for deleting a board
     try {
       await axios.delete(`http://localhost:3000/board/${id}`);
-      // instead of window reload, just setBoards prev.filter removing the id
       window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
   function setClose() {
-    // prop to send modal for closing modal
     setOpen(false);
   }
 
-  // material ui THEME
   const theme = createTheme({
     palette: {
+      mode: 'light',
       primary: {
-        main: "#0970b5",
+        main: colors.primary,
+      },
+      background: {
+        default: colors.background,
+        paper: colors.card,
+      },
+      text: {
+        primary: colors.text,
+        secondary: colors.textSecondary,
+      },
+    },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            backgroundColor: colors.card,
+            minHeight: 56,
+            borderRadius: 2,
+          },
+          notchedOutline: {
+            borderColor: '#3b82f6',
+          },
+          input: {
+            color: colors.text,
+            padding: '18.5px 14px',
+            '&::placeholder': {
+              color: colors.textSecondary,
+              opacity: 1,
+            },
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          outlined: {
+            borderColor: colors.primary,
+            color: colors.primary,
+            fontWeight: 500,
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: colors.mode === 'dark' ? colors.primary : 'rgba(59,130,246,0.08)',
+              color: colors.primary,
+              borderColor: colors.primary,
+            },
+            '&.Mui-disabled': {
+              borderColor: colors.primary,
+              color: colors.textSecondary,
+              opacity: 0.5,
+            },
+          },
+          contained: {
+            backgroundColor: colors.primary,
+            color: 'white',
+            fontWeight: 500,
+            '&:hover': {
+              backgroundColor: colors.mode === 'dark' ? '#2563eb' : '#2563eb',
+              color: 'white',
+            },
+            '&.Mui-disabled': {
+              backgroundColor: colors.primary,
+              color: colors.textSecondary,
+              opacity: 0.5,
+            },
+          },
+        },
       },
     },
   });
@@ -110,56 +167,67 @@ const HomePage = ({ onBoardClick }) => {
     <>
       <div className="root">
         <ThemeProvider theme={theme}>
-          <SearchBar textChange={handleTextChange} />
-          <FilterButtons onFilterChange={handleFilterChange} />
-          <Container
-            sx={{
-              my: 8,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "white",
-            }}
-          >
-            <Button
-              variant="outlined"
-              sx={{ width: 300, mb: 4 }}
-              onClick={() => setOpen(true)}
+          <Container maxWidth="xl" sx={{ py: 4 }}>
+            <SearchBar textChange={handleTextChange} />
+            <FilterButtons onFilterChange={handleFilterChange} />
+            
+            <Container
+              sx={{
+                my: 6,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                color: colors.text,
+              }}
             >
-              Create card
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  width: 300,
+                  mb: 4,
+                  backgroundColor: colors.primary,
+                  color: 'white',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  py: 1.5,
+                  px: 3,
+                  borderRadius: 2,
+                  boxShadow: shadows.small,
+                  '&:hover': {
+                    backgroundColor: colors.primary,
+                    boxShadow: shadows.medium,
+                  },
+                  transition: 'all 0.2s ease'
+                }}
+                onClick={() => setOpen(true)}
+              >
+                Create New Board
+              </Button>
 
-            <HomeModal open={open} handleClose={setClose} />
-            <Grid
-              container
-              direction={"row"}
-              spacing={10}
-              justifyContent={"center"}
-            >
-              {/* display boards through a map */}
-              {boards.map((board, index) => {
-                return (
+              <HomeModal open={open} handleClose={setClose} />
+              
+              <Grid
+                container
+                direction={"row"}
+                spacing={3}
+                justifyContent={"center"}
+              >
+                {boards.map((board, index) => (
                   <MediaCard
+                    key={board.id}
+                    board={board}
                     url={board.image_url}
                     title={board.title}
                     description={board.description}
                     id={board.id}
-                    key={board.id}
-                    onBoardClick={onBoardClick} // TODO - change this to pass in board data to Card Page view
+                    onBoardClick={onBoardClick}
                     onBoardDelete={onBoardDelete}
                     date={board.created_at}
                   />
-                );
-              })}
-
-              {/* <MediaCard
-            url="https://storage.googleapis.com/website-production/uploads/2017/10/stock-photo-guide-cheesy-celebration.jpg"
-            title="stock card"
-            description="lorem"
-            onBoardClick={onBoardClick} // TODO - change this later to pass in board data
-          /> */}
-            </Grid>
+                ))}
+              </Grid>
+            </Container>
           </Container>
         </ThemeProvider>
       </div>
